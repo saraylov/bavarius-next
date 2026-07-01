@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 
+const BASE = import.meta.env.BASE_URL
+
 const NAV_LEFT = [
   { to: '/bron', label: 'Бронь' },
   { to: '/filosofija', label: 'Философия' },
@@ -64,7 +66,7 @@ export default function Layout() {
 
           {/* Hamburger (mobile only) */}
           <button className="hamburger" onClick={() => setMenuOpen(true)} aria-label="Открыть меню">
-            <img src="/img/hamburger_icon.png" alt="" /> Меню
+            <img src={`${BASE}img/hamburger_icon.png`} alt="" /> Меню
           </button>
 
           {/* Desktop nav — left group */}
@@ -78,7 +80,7 @@ export default function Layout() {
 
           {/* Logo — always centered */}
           <Link to="/" className="header-logo" aria-label="На главную">
-            <img src="/img/bav_min.png" alt="Бавариус" />
+            <img src={`${BASE}img/bav_min.png`} alt="Бавариус" />
           </Link>
 
           {/* Desktop nav — right group */}
@@ -93,7 +95,7 @@ export default function Layout() {
           {/* Cart */}
           <div className="cart-widget" ref={cartRef}>
             <button className="cart-toggle" onClick={() => setCartOpen(o => !o)} aria-label="Корзина">
-              <img src="/img/business.svg" alt="" />
+              <img src={`${BASE}img/business.svg`} alt="" />
               {count > 0 && <span className="cart-badge">{count}</span>}
             </button>
             <div className={`cart-dropdown ${cartOpen ? 'open' : ''}`}>
@@ -126,7 +128,7 @@ export default function Layout() {
       <aside className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
         <button className="mobile-menu-close" onClick={() => setMenuOpen(false)} aria-label="Закрыть меню">✕</button>
         <div className="mobile-menu-logo">
-          <img src="/img/bav_min.png" alt="" />
+          <img src={`${BASE}img/bav_min.png`} alt="" />
         </div>
         <nav>
           {NAV_MOBILE.map(l => (
@@ -151,7 +153,7 @@ export default function Layout() {
       {installPrompt && (
         <div className="pwa-install-banner">
           <div className="pwa-install-info">
-            <img src="/img/icon-192.png" alt="" className="pwa-install-icon" />
+            <img src={`${BASE}img/icon-192.png`} alt="" className="pwa-install-icon" />
             <div>
               <div className="pwa-install-title">Установить приложение</div>
               <div className="pwa-install-sub">Быстрый доступ к меню и заказам</div>
@@ -172,12 +174,12 @@ export default function Layout() {
         <div className="footer-grid">
           <div className="footer-col">© Бавариус. Мясо.Гриль.Специи</div>
           <div className="footer-col">
-            <img src="/img/pin.svg" className="pin" alt="" /> Берёзовая аллея, 31
+            <img src={`${BASE}img/pin.svg`} className="pin" alt="" /> Берёзовая аллея, 31
           </div>
           <div className="footer-col"><a href="tel:+78142771323">+7 (8142) 77-13-23</a></div>
           <div className="footer-col footer-vk">
             <a href="https://vk.com/bavarius_ptz" target="_blank" rel="noopener">
-              <img src="/img/icon_vk.png" alt="VK" />
+              <img src={`${BASE}img/icon_vk.png`} alt="VK" />
             </a>
           </div>
         </div>

@@ -2,6 +2,8 @@ import { useState, useCallback } from 'react'
 import { MENU, IMG } from '../data/menuData'
 import { useCart } from '../context/CartContext'
 
+const BASE = import.meta.env.BASE_URL
+
 export default function MenuPage() {
   const [tab, setTab] = useState('kitchen')
   const [preview, setPreview] = useState(null)
@@ -21,7 +23,7 @@ export default function MenuPage() {
   const closeDish = useCallback(() => setSelectedDish(null), [])
 
   const renderItems = (items) => items.map(item => {
-    const imgSrc = IMG[item.id] ? `/menu-images/${IMG[item.id]}` : null
+    const imgSrc = IMG[item.id] ? `${BASE}menu-images/${IMG[item.id]}` : null
     return (
       <div key={item.id} className="menu-item">
         {imgSrc && (
@@ -83,7 +85,7 @@ export default function MenuPage() {
             rel="noopener"
             style={{display:'inline-block'}}
           >
-            <img src="/img/bavarius_prev.jpg" alt="Основное меню" style={{maxWidth:300,borderRadius:8,boxShadow:'0 4px 20px rgba(0,0,0,0.5)'}} />
+            <img src={`${BASE}img/bavarius_prev.jpg`} alt="Основное меню" style={{maxWidth:300,borderRadius:8,boxShadow:'0 4px 20px rgba(0,0,0,0.5)'}} />
             <div style={{fontSize:23,marginTop:16,fontFamily:'var(--font-cervo-m)'}}>Основное меню</div>
             <div style={{marginTop:8,fontSize:14,color:'#aaa'}}>Нажмите, чтобы скачать PDF</div>
           </a>
@@ -109,7 +111,7 @@ export default function MenuPage() {
             {IMG[selectedDish.id] && (
               <div className="dish-modal-img-wrap">
                 <img
-                  src={`/menu-images/${IMG[selectedDish.id]}`}
+                  src={`${BASE}menu-images/${IMG[selectedDish.id]}`}
                   alt={selectedDish.name}
                   className="dish-modal-img"
                 />
