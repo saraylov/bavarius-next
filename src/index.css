@@ -85,13 +85,13 @@ img { max-width: 100%; height: auto; }
 }
 
 .header-bar {
-  max-width: 1050px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80px;
+  min-height: 100px;
 }
 
 .header-nav {
@@ -103,8 +103,8 @@ img { max-width: 100%; height: auto; }
 .header-nav-link {
   display: inline-block;
   color: var(--c-white);
-  padding: 28px 10px;
-  font-size: 19px;
+  padding: 34px 14px;
+  font-size: 22px;
   text-decoration: none;
   transition: all 0.3s;
   white-space: nowrap;
@@ -120,7 +120,7 @@ img { max-width: 100%; height: auto; }
 }
 .header-logo img {
   display: block;
-  height: 52px;
+  height: 72px;
   width: auto;
 }
 
