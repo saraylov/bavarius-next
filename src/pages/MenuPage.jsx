@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { MENU, IMG } from '../data/menuData'
 import { useCart } from '../context/CartContext'
 
@@ -8,7 +8,9 @@ export default function MenuPage() {
   const [tab, setTab] = useState('kitchen')
   const [preview, setPreview] = useState(null)
   const [selectedDish, setSelectedDish] = useState(null)
-  const { addItem } = useCart()
+  const [addedIds, setAddedIds] = useState({})
+  const timers = useRef({})
+  const { addItem, count } = useCart()
 
   const tabs = [
     { key: 'kitchen', label: 'Кухня' },
@@ -21,6 +23,15 @@ export default function MenuPage() {
   const hidePreview = useCallback(() => setPreview(null), [])
   const openDish = useCallback((item) => setSelectedDish(item), [])
   const closeDish = useCallback(() => setSelectedDish(null), [])
+
+  const handleAdd = useCallback((id, name, price) => {
+    addItem(id, name, price)
+    setAddedIds(prev => ({ ...prev, [id]: true }))
+    if (timers.current[id]) clearTimeout(timers.current[id])
+    timers.current[id] = setTimeout(() => {
+      setAddedIds(prev => { const next = { ...prev }; delete next[id]; return next })
+    }, 1000)
+  }, [addItem])
 
   const renderItems = (items) => items.map(item => {
     const imgSrc = IMG[item.id] ? `${BASE}menu-images/${IMG[item.id]}` : null
@@ -39,8 +50,11 @@ export default function MenuPage() {
         )}
         <span className="menu-item-name">{item.name}</span>
         <span className="menu-item-price">{item.price} ₽</span>
-        <button className="add-to-cart" onClick={() => addItem(item.id, item.name, item.price)}>
-          В корзину
+        <button
+          className={`add-to-cart${addedIds[item.id] ? ' added' : ''}`}
+          onClick={() => handleAdd(item.id, item.name, item.price)}
+        >
+          {addedIds[item.id] ? '✓ Добавлено' : 'В корзину'}
         </button>
         {item.desc && <div className="menu-item-desc">{item.desc}</div>}
       </div>
@@ -132,7 +146,7 @@ export default function MenuPage() {
               <button
                 className="dish-modal-cart-btn"
                 onClick={() => {
-                  addItem(selectedDish.id, selectedDish.name, selectedDish.price)
+                  handleAdd(selectedDish.id, selectedDish.name, selectedDish.price)
                   closeDish()
                 }}
               >

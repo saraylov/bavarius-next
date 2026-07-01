@@ -33,7 +33,9 @@ export default function Layout() {
   const [cartOpen, setCartOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [installPrompt, setInstallPrompt] = useState(null)
+  const [badgePulse, setBadgePulse] = useState(false)
   const cartRef = useRef(null)
+  const prevCount = useRef(count)
 
   useEffect(() => {
     const t = setTimeout(() => setLoading(false), 600)
@@ -52,6 +54,17 @@ export default function Layout() {
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
   }, [cartOpen])
+
+  // Cart badge pulse on count change
+  useEffect(() => {
+    if (prevCount.current !== count && prevCount.current < count) {
+      setBadgePulse(true)
+      const t = setTimeout(() => setBadgePulse(false), 400)
+      prevCount.current = count
+      return () => clearTimeout(t)
+    }
+    prevCount.current = count
+  }, [count])
 
   return (
     <div className={isHome ? 'home-page' : 'bg-dark'}>
@@ -96,7 +109,7 @@ export default function Layout() {
           <div className="cart-widget" ref={cartRef}>
             <button className="cart-toggle" onClick={() => setCartOpen(o => !o)} aria-label="Корзина">
               <img src={`${BASE}img/business.svg`} alt="" />
-              {count > 0 && <span className="cart-badge">{count}</span>}
+              {count > 0 && <span className={`cart-badge${badgePulse ? ' pulse' : ''}`}>{count}</span>}
             </button>
             <div className={`cart-dropdown ${cartOpen ? 'open' : ''}`}>
               <h3>Корзина</h3>
